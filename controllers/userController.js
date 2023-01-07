@@ -10,9 +10,9 @@ module.exports = {
             let user_schema = yup.object().shape({
                 first_name: yup.string().required(),
                 last_name: yup.string().required(),
-                email: yup.string().email().min(10).max(50),
-                username:yup.string().min(3).max(30),
-                password: yup.string().min(6).max(100)
+                email: yup.string().email().min(10).max(50).required(),
+                username:yup.string().min(3).max(30).required(),
+                password: yup.string().min(6).max(100).required()
               });
               await user_schema.validate(req.body)
         }catch(err){
@@ -23,7 +23,7 @@ module.exports = {
             const salt_rounds = 10;
             const password_hash = bcrypt.hashSync(req.body.password, salt_rounds)
             const insert_query = 'INSERT INTO `users` (first_name, last_name,  email, username,password) VALUES (?,?,?,?,?) ';
-            await sqlQuery(insert_query, [req.body.first_name, req.body.last_name, req.body.email, req.body.username, password_hash]);
+            await sqlQuery(insert_query, [req.body.first_name, req.body.last_name, req.body.email.toLowerCase(), req.body.username.toLowerCase(), password_hash]);
             const id_query = 'SELECT id FROM `users` where username=? or email=?'
             const sql_res =await sqlQuery(id_query, [req.body.username,req.body.email]);
             var token = jwt.sign({ user_id: sql_res[0].id }, process.env.JWT_PWD);

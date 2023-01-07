@@ -1,5 +1,6 @@
 // import express
 const express = require('express');
+const cors = require('cors')
 // const SwaggerUI = require('swagger-ui')
 
 // import dotenv to read .env file
@@ -7,7 +8,9 @@ require('dotenv').config();
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use(cors({
+    origin: "*", 
+}))
 
 //const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
 //app.use(express.static(pathToSwaggerUi))

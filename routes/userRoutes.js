@@ -5,7 +5,6 @@ const userController = require('../controllers/UserController');
 
 /* define routes */
 router.post('/signup', userController.signup);
-
 router.post('/signin', userController.signin);
 router.get('/view-orders', userController.viewOrders);
 
