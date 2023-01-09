@@ -35,9 +35,8 @@ module.exports = {
     }, 
     search: async (req, res) => {
         try {
-            console.log(req.query);
-            const query = "SELECT * FROM items WHERE (name LIKE concat(?,'%') OR name LIKE concat('% ',?,'%')) AND price BETWEEN (IFNULL(?,price) AND IFNULL(?,price)) AND brand =  COALESCE(?,brand)";
-            const items = await sqlQuery(query, [req.query.name || null, req.query.name || null , req.query.min || null, req.query.max || null, req.query.brand || null]);
+            const query = "SELECT * FROM items WHERE (name LIKE concat(?,'%') OR name LIKE concat('% ',?,'%')) AND price>=ifnull(?,price) AND price<=ifnull(?,price) AND brand=COALESCE(?,brand)";
+            const items = await sqlQuery(query, [req.query.name ?? null, req.query.name || null , req.query.min?? null, req.query.max ?? null, req.query.brand ?? null]);
             // shuffle items at random
             for (let i = items.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));

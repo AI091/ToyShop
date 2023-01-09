@@ -3,7 +3,7 @@ const sqlQuery = require('../config/db');
 module.exports = {
     getItems: async (req, res) => {
         try {
-            const query = 'SELECT * FROM cart_items  LEFT JOIN items ON items.id=cart_items.item_id WHERE user_id=?';
+            const query = 'SELECT cart_items.id , user_id , item_id , cart_items.quantity as quantity , name, brand , description , price , image FROM cart_items LEFT JOIN items ON items.id=cart_items.item_id WHERE user_id=?';
             const items = await sqlQuery(query, [res.locals.user.user_id]);
             res.json({ success: true, items });
         } catch (err) {
