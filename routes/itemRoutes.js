@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //import controllers
-const itemsController = require('../controllers/ItemsController');
+const itemsController = require('../controllers/itemsController');
 
 /* define routes */
 router.get('/', itemsController.getItems);
