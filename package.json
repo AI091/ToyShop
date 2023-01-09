@@ -195,6 +195,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "node start app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
