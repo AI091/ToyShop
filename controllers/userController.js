@@ -23,9 +23,9 @@ module.exports = {
             const salt_rounds = 10;
             const password_hash = bcrypt.hashSync(req.body.password, salt_rounds)
             const insert_query = 'INSERT INTO `users` (first_name, last_name,  email, username,password) VALUES (?,?,?,?,?) ';
-            await sqlQuery(insert_query, [req.body.first_name, req.body.last_name, req.body.email.toLowerCase(), req.body.username.toLowerCase(), password_hash]);
+            await res.locals.sqlQuery(insert_query, [req.body.first_name, req.body.last_name, req.body.email.toLowerCase(), req.body.username.toLowerCase(), password_hash]);
             const id_query = 'SELECT id FROM `users` where username=? or email=?'
-            const sql_res =await sqlQuery(id_query, [req.body.username,req.body.email]);
+            const sql_res =await res.locals.sqlQuery(id_query, [req.body.username,req.body.email]);
             var token = jwt.sign({ user_id: sql_res[0].id }, process.env.JWT_PWD);
             res.json({ success: true, auth_token: token  });
             
@@ -44,7 +44,7 @@ module.exports = {
     signin: async (req, res) => {
         try {
             const query = 'SELECT id,password FROM users WHERE email=? or username=?';
-            const sql_res = await sqlQuery(query, [req.body.login_name, req.body.login_name]);
+            const sql_res = await res.locals.sqlQuery(query, [req.body.login_name, req.body.login_name]);
             if (!sql_res.length) {
                 res.json({ success: false, msg: 'username or email doesn\'t exist' });
             } else {
@@ -68,7 +68,7 @@ module.exports = {
         try {
             
                 const query = 'SELECT * FROM `orders` WHERE orders.user_id=?';
-                const orders = await sqlQuery(query, [res.locals.user.user_id]);
+                const orders = await res.locals.sqlQuery(query, [res.locals.user.user_id]);
                 res.json({ success: true, orders });
             
 
